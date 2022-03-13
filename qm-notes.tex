@@ -1,0 +1,214 @@
+% Document setup
+\documentclass[article, a4paper, 11pt, oneside]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[UKenglish]{babel}
+
+% Document info
+\newcommand\doctitle{Quantum mechanics notes}
+\newcommand\docauthor{Danny Nygård Hansen}
+
+% Formatting and layout
+\usepackage[autostyle]{csquotes}
+\usepackage[final]{microtype}
+\usepackage{xcolor}
+\frenchspacing
+\usepackage{latex-sty/articlepagestyle}
+\usepackage{latex-sty/articlesectionstyle}
+
+% Fonts
+\usepackage{amssymb}
+\usepackage[largesmallcaps,partialup]{kpfonts}
+\DeclareSymbolFontAlphabet{\mathrm}{operators} % https://tex.stackexchange.com/questions/40874/kpfonts-siunitx-and-math-alphabets
+\linespread{1.06}
+% \let\mathfrak\undefined
+% \usepackage{eufrak}
+\DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
+\SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
+% https://tex.stackexchange.com/questions/13815/kpfonts-with-eufrak
+\usepackage{inconsolata}
+
+% Hyperlinks
+\usepackage{hyperref}
+\definecolor{linkcolor}{HTML}{4f4fa3}
+\hypersetup{%
+	pdftitle=\doctitle,
+	pdfauthor=\docauthor,
+	colorlinks,
+	linkcolor=linkcolor,
+	citecolor=linkcolor,
+	urlcolor=linkcolor,
+	bookmarksnumbered=true
+}
+
+% Equation numbering
+\numberwithin{equation}{chapter}
+
+% Footnotes
+\footmarkstyle{\textsuperscript{#1}\hspace{0.25em}}
+
+% Mathematics
+\usepackage{latex-sty/basicmathcommands}
+\usepackage{latex-sty/framedtheorems}
+\usepackage{latex-sty/topologycommands}
+\usepackage{latex-sty/probabilitycommands}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+
+% Lists
+\usepackage{enumitem}
+\setenumerate[0]{label=\normalfont(\arabic*)}
+
+% Bibliography
+\usepackage[backend=biber, style=authoryear, maxcitenames=2, useprefix]{biblatex}
+\addbibresource{references.bib}
+
+% Title
+\title{\doctitle}
+\author{\docauthor}
+
+\newcommand{\setF}{\mathbb{F}}
+\newcommand{\ev}{\mathrm{ev}}
+\newcommand{\calT}{\mathcal{T}}
+\newcommand{\calU}{\mathcal{U}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\borel}{\mathcal{B}}
+\newcommand{\measurable}{\mathcal{M}}
+\newcommand{\wto}{\Rightarrow}
+\DeclarePairedDelimiter{\net}{\langle}{\rangle}
+\newcommand{\strucS}{\mathfrak{S}}
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle} % Generating set
+\newcommand{\frakL}{\mathfrak{L}}
+
+
+% Physics commands
+
+\DeclarePairedDelimiter{\ket}{\lvert}{\rangle}
+\newcommand{\op}[1]{\mathsf{#1}}
+
+
+\begin{document}
+
+\maketitle
+
+\chapter{Wave functions}
+
+Consider a (classical) monochromatic plane electromagnetic wave in vacuum, with amplitude $E_0$. The average power per unit area transported by this wave is the \emph{intensity} and is given by
+%
+\begin{equation*}
+    I
+        = \frac{1}{2} c \epsilon_0 E_0^2.
+\end{equation*}
+%
+If the wave is incident on a screen and $\dif A$ denotes the area of an infinitesimal patch $M$ of this screen, then the average power transferred to this patch is $I \dif A$. Turning down the intensity until individual photons are emitted, the position of a photon on the screen is a random variable\footnote{We are not appealing to any intrinsic randomness in quantum mechanics, only the experimental fact that photons appear seemingly randomly on the screen.} $\rvar{X}$ with values in $\reals^2$, and whose distribution $P_\rvar{X}$ has a density $f$ with respect to the Lebesgue measure on $\reals^2$. Clearly $I \dif A$ is proportional to the probability $P_\rvar{X}(M) = f \dif A$, and hence $I$ is proportional to $f$. It follows that $f$ is proportional to $E_0^2$.
+
+Recall that the electric field (and the magnetic field) constitutes the wave function for electromagnetic waves, so we see that the density $f$ is proportional to the \emph{square} of the wave function. Writing $f = \abs{\psi}^2$, we call $\psi$ the \emph{probability amplitude} for $\rvar{X}$. (Here we normalise the wave function to obtain $\psi$ such that $\abs{\psi}^2$ becomes a density.) We take the modulus of $\psi$ to allow for the possibility that $\psi$ be complex-valued.
+
+As an example, consider a photon passing through a double slit. Let $\psi_1$ and $\psi_2$ be the contributions to $\psi$ from each of the two slits, such that $\psi = \psi_1 + \psi_2$. If the second slit is closed, then $\psi_2 = 0$, and similarly if the first slit is closed. If both slits are open, then we might expect that $P_\rvar{X}(M) = (\abs{\psi_1}^2 + \abs{\psi_2}^2) \dif A$. However, the probability that the photon hits the patch $M$ is instead 
+%
+\begin{equation*}
+    P_\rvar{X}(M)
+        = \abs{\psi}^2 \dif A
+        = \abs{\psi_1 + \psi_2}^2 \dif A
+\end{equation*}
+%
+by the principle of superposition.
+
+
+\chapter{The Schrödinger equation}
+
+\section{Unitary time evolution}
+
+Let $\ket{\psi(t)}$ denote the state of a quantum mechanical system at time $t$. We say that the time evolution of the system is \emph{unitary} if there is a two-parameter family of unitary operators $\op{U}(s,t)$, where $s$ and $t$ are real parameters (and $\op{U}(s,t)$ is suitably smooth in $s$ and $t$), such that
+%
+\begin{equation*}
+    \ket{\psi(t_2)} = \op{U}(t_2,t_1) \ket{\psi(t_1)}
+\end{equation*}
+%
+for all appropriate $t_1, t_2$. Note that if a system has unitary time evolution, then the entire evolution of the system (both in the future and in the past) is determined by the state of the system at a single point in time.
+
+
+\section{Derivation of the Schrödinger equation}
+
+Assume that the time evolution of the system in question is unitary. Further assume that the Hilbert space $\calH$ of states of the system is finite-dimensional. Let $I \subseteq \reals$ be an open interval, and consider the evolution of the system in this interval. Define a map $\Psi \colon I \to \calH$ by $\Psi(t) = \ket{\psi(t)}$.
+
+For $t \in I$ also define a map $\op{G}(t) \colon \calH \to \calH$ by $\Psi(t) \mapsto \Psi'(t)$.\footnote{Since $\calH$ is finite-dimensional, the derivative of $\Psi$ is well-defined and lies in $\calH$.} Notice that, since the time evolution is unitary, it is deterministic. The state $\Psi(t)$ of the system thus determines its entire time evolution, hence determines $\Psi'(t)$, so $\op{G}(t)$ is well-defined. Furthermore, if $\Phi \colon I \to \calH$ is another possible time-evolution and $\beta \in \complex$, then
+%
+\begin{align*}
+    \op{G}(t)[\beta \Psi(t) + \Phi(t)]
+        &= \op{G}(t)[(\beta \Psi + \Phi)(t)]
+         = (\beta \Psi + \Phi)'(t) \\
+        &= \beta \Psi'(t) + \Phi'(t)
+         = \beta \op{G}(t)[\Psi(t)] + \op{G}(t)[\Phi'(t)],
+\end{align*}
+%
+so $\op{G}(t)$ is linear for each fixed $t \in I$, so we denote application of $\op{G}(t)$ by juxtaposition.\footnote{There seems to be a subtlety here, in that it should be possible to obtain any state in $\calH$ for $\op{G}(t)$ to make sense.}
+
+Next, unitary evolution implies that normalised states remain normalised. Denoting the inner product on $\calH$ by $\inner{\,\cdot\,}{\,\cdot\,}$, for $t \in I$ it follows that
+%
+\begin{align*}
+    0
+        &= \frac{\dif}{\dif s} \bigg\vert_{s=t} \inner{\Psi(s)}{\Psi(s)} \\
+        &= \inner{\Psi'(t)}{\Psi(t)} + \inner{\Psi(t)}{\Psi'(t)} \\
+        &= \inner{\op{G}(t) \Psi(t)}{\Psi(t)} + \inner{\Psi(t)}{\op{G}(t) \Psi(t)} \\
+        &= \inner[\big]{\Psi(t)}{ \bigl[ \op{G}(t)^\dagger + \op{G}(t) \bigr] \Psi(t) }.
+\end{align*}
+%
+Since this holds for all $\Psi(t) \in \calH$, it follows that $\op{G}(t)^\dagger + \op{G}(t) = 0$, so $G(t)$ is anti-Hermitian. The Hermitian operator $\op{H}(t) = \iu \hbar \op{G}(t)$ is called the \emph{Hamiltonian operator}, and in terms of this we have
+%
+\begin{equation*}
+    \op{H}(t) \Psi(t) = \iu \hbar \Psi'(t).
+\end{equation*}
+%
+Or in bra--ket notation,
+%
+\begin{equation*}
+    \op{H}(t) \ket{\psi(t)}
+        = \iu \hbar \frac{\dif}{\dif t} \ket{\psi(t)}.
+\end{equation*}
+
+
+\section{Uniform dynamics}
+
+If the dynamics are uniform, then the evolution operators constitute a one-parameter family $t \mapsto \op{U}(t)$ of unitary operators, and the Hamiltonian $\op{H}(t) = \op{H}$ is time-independent. Hence we have $\ket{\psi(t)} = \op{U}(t) \ket{\psi(0)}$, and we can write the Schrödinger equation
+%
+\begin{equation*}
+    \op{H} \op{U}(t) \ket{\psi(0)}
+        = \iu \hbar \frac{\dif}{\dif t} \op{U}(t) \ket{\psi(0)}.
+\end{equation*}
+%
+We may also be tempted to write this as
+%
+\begin{equation}
+    \label{eq:schrodinger-equation-operator-form}
+    \op{H} \op{U}(t)
+        = \iu \hbar \frac{\dif}{\dif t} \op{U}(t),
+\end{equation}
+%
+and while the left-hand side is unproblematic, we have to be careful with the right-hand side. The right-hand denotes the operator which first applies $\op{U}(s)$, with $s$ ranging over $I$, to some vector, and then differentiates the results with respect to $s$ in $s = t$. More precisely we have, for $\psi \in \calH$,
+%
+\begin{equation*}
+    \biggl( \frac{\dif}{\dif t} \op{U}(t) \biggr) \psi
+        = \frac{\dif}{\dif s} \bigg\vert_{s=t} \op{U}(s) \psi
+        = \lim_{s \to t} \frac{\op{U}(s)\psi - \op{U}(t)\psi}{s-t}.
+\end{equation*}
+%
+Thus $s \mapsto \op{U}(s)$ need only be strongly differentiable. If $\dim\calH < \infty$, then this is the same as it being differentiable with respect to the operator norm (or any norm on $\calL(\calH)$ since they are all equivalent). Furthermore, the derivative of $s \mapsto \op{U}(s)\psi$ at $s = t$ is just $\op{U}'(t)\psi$. Hence in this case we may indeed interpret \cref{eq:schrodinger-equation-operator-form} as a differential equation in an operator-valued variable. This has the solution
+%
+\begin{equation*}
+    \op{U}(t)
+        = \exp \biggl( - \frac{\iu}{\hbar} \op{H} t \biggr).
+\end{equation*}
+
+\end{document}
